@@ -183,7 +183,7 @@ function drawRoom(){
   // pothos ON DESK – positioned at desk top surface
   const deskTopPt = g(9.2, 1.0);
   const deskBoxH  = TH*1.2;
-  drawPlant(deskTopPt.x, deskTopPt.y - deskBoxH, 'pothos', 18);
+  // removed desk plant
 }
 
 function drawWindow(){
@@ -283,7 +283,7 @@ function drawBed(col,row){
 }
 
 function drawShelf(col,row){
-  const SH=TH*2.3, SW=3.2, SD=0.85;
+  const SH=TH*2.3, SW=3.6, SD=1.15;
   isoBox(col,row,SW,SD,SH, C.shT,'#fce0f0','#f8d8ec');
 
   // Books drawn ON THE ISO FRONT FACE (right face, since we look at it)
@@ -512,6 +512,10 @@ function drawScene(){
   }
 }
 
+
+const clickSound = new Audio('soundreality-battle-pop-424581.mp3');
+clickSound.volume = 0.35;
+
 // ── click ─────────────────────────────────────────────────────────────────
 cv.addEventListener('click',e=>{
   if(spr.state==='hurt') return;
@@ -519,6 +523,7 @@ cv.addEventListener('click',e=>{
   const dw=(img?.naturalWidth||75)*spr.scale, dh=(img?.naturalHeight||126)*spr.scale;
   const mx=e.clientX, my=e.clientY;
   if(mx>=spr.x-dw*.5&&mx<=spr.x+dw*.5&&my>=spr.y-dh&&my<=spr.y){
+    try{ clickSound.currentTime=0; clickSound.play(); }catch(err){}
     spr.state='hurt'; spr.frame=0; spr.hurtTimer=hurtFrames.length*220;
     hp=Math.max(0,hp-1); updateHearts();
     if(hp===0) setTimeout(()=>{hp=5;updateHearts();},2500);
